@@ -5,20 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>For Ani ❤️</title>
     
-    <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Load elegant Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
     
     <style>
-        /* Custom Font Classes */
         .font-script { font-family: 'Dancing Script', cursive; }
         .font-serif { font-family: 'Lora', serif; }
 
-        /* Animated Pastel Gradient Background */
         body {
             background: linear-gradient(-45deg, #ff9a9e, #fecfef, #a1c4fd, #c2e9fb);
             background-size: 400% 400%;
@@ -38,7 +33,6 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Glassmorphism Card Style */
         .glass-card {
             background: rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(20px);
@@ -54,7 +48,6 @@
             100% { transform: translateY(0px); }
         }
 
-        /* Pulsing Heart Animation */
         .pulse-heart {
             color: #ff3b3b;
             filter: drop-shadow(0 0 15px rgba(255, 59, 59, 0.6));
@@ -70,12 +63,10 @@
             70% { transform: scale(1); }
         }
         
-        /* Text Glow */
         .text-glow {
             text-shadow: 0 2px 10px rgba(255,255,255,0.8);
         }
 
-        /* Page Transitions */
         .page {
             display: none;
             opacity: 0;
@@ -88,7 +79,6 @@
             transform: translateY(0);
         }
 
-        /* Stylish Buttons */
         .btn {
             background: rgba(255, 255, 255, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.6);
@@ -107,7 +97,6 @@
             box-shadow: 0 4px 15px rgba(255,255,255,0.4);
         }
 
-        /* Polaroid Photo Effect */
         .polaroid {
             background: white;
             padding: 10px 10px 25px 10px;
@@ -120,21 +109,19 @@
         .polaroid img {
             width: 100%;
             border-radius: 2px;
+            height: 250px;
+            object-fit: cover;
         }
     </style>
 </head>
 <body>
 
-    <!-- Background Music Player -->
-    <!-- You can replace the 'src' link with any direct mp3 link you prefer -->
-    <audio id="bgMusic" loop>
-        <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_82aa063a9a.mp3?filename=romantic-piano-106540.mp3" type="audio/mpeg">
-    </audio>
+    <!-- Hidden YouTube Player for the background track -->
+    <div id="youtube-player" style="display:none;"></div>
 
-    <!-- Main Container -->
     <main class="glass-card w-[90%] max-w-md rounded-[2rem] p-8 md:p-12 text-center relative z-10">
         
-        <!-- ================= PAGE 1: Intro ================= -->
+        <!-- PAGE 1: Intro -->
         <div id="page1" class="page active">
             <div class="flex justify-center mb-6">
                 <svg class="w-16 h-16 pulse-heart" fill="currentColor" viewBox="0 0 24 24">
@@ -146,7 +133,7 @@
             <button class="btn" onclick="nextPage(1)">Open ❤️</button>
         </div>
 
-        <!-- ================= PAGE 2: The Meaning ================= -->
+        <!-- PAGE 2: The Meaning -->
         <div id="page2" class="page">
             <h2 class="font-script text-4xl text-glow mb-6">My Everything</h2>
             <div class="font-serif text-lg leading-relaxed space-y-4 mb-8">
@@ -156,20 +143,20 @@
             <button class="btn" onclick="nextPage(2)">Next ✨</button>
         </div>
 
-        <!-- ================= PAGE 3: The Photo (Memories) ================= -->
+        <!-- PAGE 3: The Photo -->
         <div id="page3" class="page">
             <h2 class="font-script text-4xl text-glow mb-4">Us</h2>
             
-            <!-- You can replace the image URL in the src="" below with a link to a photo of you two -->
             <div class="polaroid">
-                <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=600&auto=format&fit=crop" alt="Romantic">
+                <!-- IMPORTANT: Change "my-photo.jpg" below to the exact name of the image you upload to GitHub -->
+                <img src="my-photo.jpg" alt="Romantic" onerror="this.src='https://images.unsplash.com/photo-1520625946116-24e03cc0965d?q=80&w=600&auto=format&fit=crop'">
             </div>
             
             <p class="font-serif text-md mt-4 mb-8">I cherish every adventure we have together.</p>
             <button class="btn" onclick="nextPage(3)">Next 💫</button>
         </div>
 
-        <!-- ================= PAGE 4: The Promise ================= -->
+        <!-- PAGE 4: The Promise -->
         <div id="page4" class="page">
             <h2 class="font-script text-4xl text-glow mb-6">My Promise</h2>
             <div class="font-serif text-lg leading-relaxed space-y-4 mb-8">
@@ -179,7 +166,7 @@
             <button class="btn" onclick="nextPage(4)">Next 🌹</button>
         </div>
 
-        <!-- ================= PAGE 5: The Finale ================= -->
+        <!-- PAGE 5: The Finale -->
         <div id="page5" class="page">
             <div class="flex justify-center mb-6 mt-4">
                 <svg class="w-24 h-24 pulse-heart" fill="currentColor" viewBox="0 0 24 24">
@@ -194,32 +181,49 @@
 
     </main>
 
-    <!-- JavaScript to handle page turning and music -->
     <script>
+        // --- YOUTUBE AUDIO SETUP ---
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        var player;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('youtube-player', {
+                height: '0',
+                width: '0',
+                videoId: '36B-mADuDaQ', // Track ID
+                playerVars: {
+                    'autoplay': 0,
+                    'controls': 0,
+                    'showinfo': 0,
+                    'rel': 0,
+                    'loop': 1,
+                    'playlist': '36B-mADuDaQ'
+                }
+            });
+        }
+
+        // --- PAGE LOGIC ---
         function nextPage(currentPage) {
-            // Play music on the first click
-            if (currentPage === 1) {
-                let audio = document.getElementById("bgMusic");
-                audio.volume = 0.5; // Set volume to 50%
-                audio.play();
+            // Play song on the very first click
+            if (currentPage === 1 && player && typeof player.playVideo === 'function') {
+                player.playVideo();
             }
 
-            // Hide current page smoothly
             let currentDiv = document.getElementById(`page${currentPage}`);
             currentDiv.style.opacity = '0';
             
             setTimeout(() => {
                 currentDiv.classList.remove('active');
-                
-                // Show next page
                 let nextDiv = document.getElementById(`page${currentPage + 1}`);
                 nextDiv.classList.add('active');
                 
-                // Slight delay to trigger the fade-in animation
                 setTimeout(() => {
                     nextDiv.style.opacity = '1';
                 }, 50);
-            }, 400); // Wait for fade out
+            }, 400); 
         }
 
         function resetPages() {
@@ -228,10 +232,8 @@
             
             setTimeout(() => {
                 lastDiv.classList.remove('active');
-                
                 let firstDiv = document.getElementById('page1');
                 firstDiv.classList.add('active');
-                
                 setTimeout(() => {
                     firstDiv.style.opacity = '1';
                 }, 50);
